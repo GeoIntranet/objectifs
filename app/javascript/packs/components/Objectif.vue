@@ -4,6 +4,9 @@
     <div class="col-lg-12">
       <div class="row">
         <div class="col-md-8"><h3>{{objectif.title}}</h3></div>
+        
+        
+        
         <div class="col-md-4 border-left">{{objectif.weight}}%</div>
       </div>
       <div class="row">

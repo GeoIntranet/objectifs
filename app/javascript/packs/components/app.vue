@@ -23,7 +23,7 @@
       <div class="row mt-2" v-if="objectifs.length <= 0">
         <div class="col-lg-12 text-center">
           <hr class="elevo">
-          <div class="badge badge-invalid">Invalid objectifs</div>
+          <div class="badge badge-invalid">Invalid Objectives</div>
         </div>
       </div>
     </div>
@@ -45,7 +45,7 @@
         },
         data: function () {
             return {
-                title: "Objectives managment",
+                title: "Objectives management",
                 objectifs: [],
                 invalidWeight: false,
                 weight: 0,

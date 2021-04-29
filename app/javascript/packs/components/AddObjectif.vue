@@ -9,13 +9,22 @@
 <script>
     export default {
         data: function () {
-            return {
-            }
+            return {}
         },
         props: [],
         methods: {
             AddObjectif() {
-                console.log('ajouter un objectif')
+                let vm = this;
+                axios.post('/api/v1/objectifs', {
+                    _token: window.token
+                })
+                .then(function (response) {
+                    if (response.data.status === "ok"){
+                        Event.$emit('add_objectif', response.data.data);
+                    }
+                })
+                .catch(function (error) {
+                })
             }
         },
     }

@@ -40,7 +40,7 @@
           </div>
         </div>
         <div class="row liste-kr pb-3">
-          <div class="col-md-12 border-bottom" v-for="kr,index in copyKrs">
+          <div class="col-md-12 border-bottom" v-for="(kr,index) in copyKrs" :key="kr.id" >
             <kr :index="index" :kr="kr"></kr>
           </div>
         </div>

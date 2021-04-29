@@ -8,7 +8,7 @@
     </div>
     <div class="container">
       <div class="row">
-        <div class="col-md-4 mt-3" v-for="objectif,index in this.objectifs">
+        <div class="col-md-4 mt-3" v-for="(objectif,index) in this.objectifs" :key="objectif.id">
           <div class="wrapper-objectif pr-2">
             <objectif :index="index" :objectif="objectif"></objectif>
           </div>

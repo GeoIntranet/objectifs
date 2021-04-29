@@ -45,7 +45,7 @@
         },
         data: function () {
             return {
-                title: "Gestion d'objectifs ",
+                title: "Objectives managment",
                 objectifs: [],
                 invalidWeight: false,
                 weight: 0,

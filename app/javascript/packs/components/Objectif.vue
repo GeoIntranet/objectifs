@@ -24,15 +24,15 @@
                 <input type="number" class="form-control" v-model="copyObjectif.weight">
               </div>
               <div class="col-md-1">
-                <div class="wrapper-delete-container" @click.prevent="update"> || </div>
+                <div class="wrapper-delete-container" @click.prevent="update"> ||</div>
               </div>
               <div class="col-md-1">
-                <div class="wrapper-delete-container" @click.prevent="toggleEditMode"> - </div>
+                <div class="wrapper-delete-container" @click.prevent="toggleEditMode"> -</div>
               </div>
             </div>
-           
-          </div>
           
+          </div>
+        
         </div>
         <div class="row">
           <div class="col-md-12">
@@ -40,7 +40,7 @@
           </div>
         </div>
         <div class="row liste-kr pb-3">
-          <div class="col-md-12 border-bottom" v-for="(kr,index) in copyKrs" :key="kr.id" >
+          <div class="col-md-12 border-bottom" v-for="(kr,index) in copyKrs" :key="kr.id">
             <kr :index="index" :kr="kr"></kr>
           </div>
         </div>
@@ -66,41 +66,59 @@
         },
         data: function () {
             return {
+                title: "",
+                weight: "",
                 copyObjectif: [],
                 copyKrs: [],
                 weightStatusError: true,
-                isOnEditMode:false,
+                isOnEditMode: false,
             }
         },
         props: ["index", "objectif"],
         methods: {
             deleteObjectif() {
-                let vm = this;
-                axios.delete('/api/v1/objectifs/' + vm.copyObjectif.id, {
-                    _token: window.token
-                })
-                    .then(function (response) {
-                        Event.$emit('delete_objectif', vm.index);
+                // just for th moockup
+                let hasConfirmation = confirm("Want to delete?");
+                if (hasConfirmation) {
+                    let vm = this;
+                    axios.delete('/api/v1/objectifs/' + vm.copyObjectif.id, {
+                        _token: window.token
                     })
-                    .catch(function (error) {
-                    })
+                        .then(function (response) {
+                            Event.$emit('delete_objectif', vm.index);
+                        })
+                        .catch(function (error) {
+                        })
+                }
+
             },
             toggleEditMode() {
                 this.isOnEditMode = !this.isOnEditMode;
             },
-            update(){
-                let vm = this;
-                axios.put('/api/v1/objectifs/'+vm.copyObjectif.id, {
-                    _token: window.token,
-                    title:vm.copyObjectif.title,
-                    weight:vm.copyObjectif.weight,
-                })
-                .then(function (response) {
-                    Event.$emit('edit_objectif', vm.index,response.data.data);
-                    vm.isOnEditMode = false;
-                })
-                .catch(function (error) {
-                })
+            update() {
+               
+                let hasConfirmation = confirm("Want to update?");
+
+                if (hasConfirmation) {
+                    let vm = this;
+                    axios.put('/api/v1/objectifs/' + vm.copyObjectif.id, {
+                        _token: window.token,
+                        title: vm.copyObjectif.title,
+                        weight: vm.copyObjectif.weight,
+                    })
+                        .then(function (response) {
+                            Event.$emit('edit_objectif', vm.index, response.data.data);
+                            vm.isOnEditMode = false;
+                        })
+                        .catch(function (error) {
+                        })
+                }
+                else {
+                    this.copyObjectif.title = this.title ;
+                    this.copyObjectif.weight = this.weight ;
+                }
+
+                this.isOnEditMode = false;
             },
             init_var() {
                 this.copyObjectif = this.objectif;
@@ -109,6 +127,9 @@
                 }
                 this.copyKrs = this.copyObjectif.krs;
                 this.process_weight();
+                
+                this.title = this.copyObjectif.title;
+                this.weight = this.copyObjectif.weight;
             },
             process_weight() {
                 let count = this.copyKrs.reduce((a, b) => a + (b.weight || 0), 0);
@@ -121,7 +142,7 @@
             let key_edit_kr = "edit_kr_" + this.objectif.id;
 
             this.init_var();
-            Event.$on(key_edit_kr, (index,kr) => {
+            Event.$on(key_edit_kr, (index, kr) => {
                 this.copyKrs[index] = kr;
                 this.process_weight();
             });

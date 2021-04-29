@@ -1,25 +1,16 @@
-# README
+# OBJECTIVES MANAGEMENT
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+* Ruby version  : 2.7.2
 
-Things you may want to cover:
+* System dependencies :
 
-* Ruby version
+- Ruby v2.7.2
+- RAILS v6.1
+- NPM v6.14.10
+- NODE v12.14.10
 
-* System dependencies
+* Database initialization : rake db:migrate
 
-* Configuration
+* start the server : rails s
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-"# objectifs" 
+* go to localhost:3000 & enjoy

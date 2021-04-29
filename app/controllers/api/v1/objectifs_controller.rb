@@ -23,9 +23,9 @@ class Api::V1::ObjectifsController < ApplicationController
 
   def destroy
     respond_to do |format|
-      id_tmp = @objectif.id
       if @objectif.delete
-        data = {status: :ok,msg:"Objectif deleted successfully",data:id_tmp}
+        Kr.where(objectif_id:params[:id]).delete_all
+        data = {status: :ok,msg:"Objectif deleted successfully"}
       else
         data = {status: :error,msg:"Error",data:{}}
       end

@@ -1,8 +1,11 @@
 <template>
   <div>
-    <button @click="AddKr" class="btn btn-primary">
-      +
-    </button>
+    <a class="badge badge-elevo"
+       href="#"
+       @click.prevent="AddKr"
+    >
+      <small> + Add KR</small>
+    </a>
   </div>
 </template>
 

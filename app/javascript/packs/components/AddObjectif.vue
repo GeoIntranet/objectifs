@@ -1,7 +1,7 @@
 <template>
   <div>
-    <button @click="AddObjectif" class="btn btn-primary">
-      Ajouter un objectif
+    <button @click="AddObjectif" class="btn btn-objectif">
+      + Ajouter un objectif
     </button>
   </div>
 </template>

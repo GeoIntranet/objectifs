@@ -1,3 +1,57 @@
-// Place all the styles related to the home controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: https://sass-lang.com/
+$invalid: #FEB291;
+$elevo: #4B76F7;
+
+.btn-objectif {
+  background-color: $elevo !important;
+  color: white !important;
+}
+
+.wrapper-objectif {
+  background-color: #fff;
+  border-radius: 4px;
+  -webkit-box-shadow: 5px 5px 10px 5px rgba(0,0,0,0.03);
+  box-shadow: 5px 5px 10px 5px rgba(0,0,0,0.03);
+}
+
+.objectif-header {
+  background-color: $elevo;
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+  padding: 10px 0;
+  .title {
+    padding-top: 6px;
+    color: white;
+  }
+  .weight {
+    color: white;
+    font-weight: 700;
+    font-size: 2em;
+    text-align: center;
+  }
+}
+
+.badge-elevo{
+  background-color: $elevo;
+  color: lighten($elevo, 50%);
+  font-weight: 300 !important;
+}
+.badge-invalid {
+  background-color: $invalid;
+  color: lighten($invalid, 30%);
+  font-weight: 300 !important;
+}
+
+hr{
+  &.elevo{border-top: 1px solid #CAD7FF}
+}
+
+.wrapper-delete-container{
+  &:hover{cursor:pointer}
+  text-align: center;
+  color:white;
+  font-weight: 900;
+  height: 30px;
+  width: 30px;
+  border-radius: 30px;
+  background-color: rgba(255,255,255, .5)
+}

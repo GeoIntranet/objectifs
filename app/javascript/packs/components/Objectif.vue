@@ -1,21 +1,53 @@
 <template>
   <div>
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="row">
-          <div class="col-md-8">
-            <h3><span @click="deleteObjectif">X</span> {{objectif.title}}</h3>
+    <div class="row wrapper-objectif">
+      <div class="col-md-12">
+        <div class="row objectif-header">
+          <div class="col-md-1 pt-2 align-self-center">
+            <div class="wrapper-delete-container" @click.prevent="deleteObjectif"> -</div>
           </div>
-          <div class="col-md-4 border-left">{{objectif.weight}}%</div>
+          
+          <div class="col-md-7 title center pl-5 align-self-center" @click="isOnEditMode = true">
+            <h3> {{copyObjectif.title}} </h3>
+          </div>
+          
+          <div class="col-md-4 border-left weight align-self-center" @click="isOnEditMode = true">
+            {{copyObjectif.weight}}%
+          </div>
+          
+          <div class="col-md-12" v-if="isOnEditMode">
+            <div class="row">
+              <div class="col-md-6">
+                <input type="text" class="form-control" v-model="copyObjectif.title">
+              </div>
+              <div class="col-md-3">
+                <input type="number" class="form-control" v-model="copyObjectif.weight">
+              </div>
+              <div class="col-md-1">
+                <div class="wrapper-delete-container" @click.prevent="update"> || </div>
+              </div>
+              <div class="col-md-1">
+                <div class="wrapper-delete-container" @click.prevent="toggleEditMode"> - </div>
+              </div>
+            </div>
+           
+          </div>
+          
         </div>
         <div class="row">
           <div class="col-md-12">
-            <add-kr :objectif="objectif"></add-kr>
+            <add-kr :objectif="copyObjectif"></add-kr>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-12" v-for="kr,index in copyKrs">
+        <div class="row liste-kr pb-3">
+          <div class="col-md-12 border-bottom" v-for="kr,index in copyKrs">
             <kr :index="index" :kr="kr"></kr>
+          </div>
+        </div>
+        
+        <div class="row text-center my-2" v-if="weightStatusError == true">
+          <div class="col-md-12">
+            <span class="badge badge-invalid"> Invalid Weight Kr</span>
           </div>
         </div>
       </div>
@@ -35,10 +67,12 @@
         data: function () {
             return {
                 copyObjectif: [],
-                copyKrs: []
+                copyKrs: [],
+                weightStatusError: true,
+                isOnEditMode:false,
             }
         },
-        props: ["index","objectif"],
+        props: ["index", "objectif"],
         methods: {
             deleteObjectif() {
                 let vm = this;
@@ -51,31 +85,57 @@
                     .catch(function (error) {
                     })
             },
-            EditObjectif() {
-                console.log('ajouter un objectif')
+            toggleEditMode() {
+                this.isOnEditMode = !this.isOnEditMode;
             },
-            init_var(){
+            update(){
+                let vm = this;
+                axios.put('/api/v1/objectifs/'+vm.copyObjectif.id, {
+                    _token: window.token,
+                    title:vm.copyObjectif.title,
+                    weight:vm.copyObjectif.weight,
+                })
+                .then(function (response) {
+                    Event.$emit('edit_objectif', vm.index,response.data.data);
+                    vm.isOnEditMode = false;
+                })
+                .catch(function (error) {
+                })
+            },
+            init_var() {
                 this.copyObjectif = this.objectif;
-                if (this.copyObjectif.krs === undefined){
+                if (this.copyObjectif.krs === undefined) {
                     this.copyObjectif.krs = [];
                 }
                 this.copyKrs = this.copyObjectif.krs;
-            }
+                this.process_weight();
+            },
+            process_weight() {
+                let count = this.copyKrs.reduce((a, b) => a + (b.weight || 0), 0);
+                this.weightStatusError = count == 100 ? false : true;
+            },
         },
         mounted() {
-            let key_add_kr = "add_kr_"+this.objectif.id;
-            let key_delete_kr = "delete_kr_"+this.objectif.id;
-            
+            let key_add_kr = "add_kr_" + this.objectif.id;
+            let key_delete_kr = "delete_kr_" + this.objectif.id;
+            let key_edit_kr = "edit_kr_" + this.objectif.id;
+
             this.init_var();
-            
-           
+            Event.$on(key_edit_kr, (index,kr) => {
+                this.copyKrs[index] = kr;
+                this.process_weight();
+            });
+
             Event.$on(key_add_kr, (kr) => {
                 this.copyKrs.push(kr);
+                this.process_weight();
             });
 
             Event.$on(key_delete_kr, (index) => {
                 console.log(key_delete_kr);
-                this.copyKrs.splice(index,1)
+                this.copyKrs.splice(index, 1);
+                this.process_weight();
+
             })
         }
     }

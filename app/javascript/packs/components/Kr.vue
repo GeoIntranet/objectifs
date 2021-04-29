@@ -1,9 +1,13 @@
 <template>
-
+  
   <div class="row">
     <div class="col-md-1">E</div>
-    <div class="col-md-8" @click="edit">{{kr.title}}</div>
-    <div class="col-md-3">{{kr.weight}}%</div>
+    <div class="col-md-8" @click="ToogleEditMode" :title="title" :contentEditable="ToogleEditMode">
+      {{title}}
+    </div>
+    <div class="col-md-3" @click="ToogleEditMode">
+      {{weight}}%
+    </div>
   </div>
 </template>
 
@@ -11,17 +15,22 @@
     export default {
         data: function () {
             return {
-                title:""
+                title: "",
+                weight: 0,
+                isEditable: false,
             }
         },
         props: ["kr"],
         methods: {
-            AddSubObjectif() {
-                console.log('Liste des kr')
+            ToogleEditMode() {
+                console.log("edit mode");
+                this.isEditable = !this.isEditable
+                console.log(this.isEditable);
             }
         },
-        mounted:{
-            
+        mounted() {
+            this.title = this.kr.title;
+            this.weight = this.kr.weight;
         }
     }
 </script>

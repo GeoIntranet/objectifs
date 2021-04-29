@@ -1,6 +1,9 @@
 $invalid: #FEB291;
 $elevo: #4B76F7;
 
+.hover{
+  &:hover{cursor:pointer}
+}
 .btn-objectif {
   background-color: $elevo !important;
   color: white !important;

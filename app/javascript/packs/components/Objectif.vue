@@ -3,11 +3,11 @@
     <div class="row wrapper-objectif">
       <div class="col-md-12">
         <div class="row objectif-header">
-          <div class="col-md-1 pt-2 align-self-center">
-            <div class="wrapper-delete-container" @click.prevent="deleteObjectif"> -</div>
+          <div class="col-md-1 pt-2 align-self-center hover">
+            <div class="wrapper-delete-container" @click.prevent="deleteObjectif"> - </div>
           </div>
           
-          <div class="col-md-7 title center pl-5 align-self-center" @click="isOnEditMode = true">
+          <div class="col-md-7 title center pl-5 align-self-center hover" @click="isOnEditMode = true">
             <h3> {{copyObjectif.title}} </h3>
           </div>
           
@@ -17,7 +17,7 @@
           
           <div class="col-md-12" v-if="isOnEditMode">
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-6 ">
                 <input type="text" class="form-control" v-model="copyObjectif.title">
               </div>
               <div class="col-md-3">

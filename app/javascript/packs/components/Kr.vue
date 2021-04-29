@@ -4,10 +4,10 @@
     <div class="col-md-1">
       <a class="badge badge-elevo" href="#" @click.prevent="deleteKR"> - </a>
     </div>
-    <div class="col-md-8" @click="InEditMode = true">
+    <div class="col-md-8 hover" @click="InEditMode = true">
       {{copyKr.title}}
     </div>
-    <div class="col-md-3" @click="InEditMode = true">
+    <div class="col-md-3 hover" @click="InEditMode = true">
       {{copyKr.weight}}%
     </div>
     <div class="col-md-12">

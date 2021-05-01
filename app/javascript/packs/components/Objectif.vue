@@ -3,15 +3,15 @@
     <div class="row wrapper-objectif">
       <div class="col-md-12">
         <div class="row objectif-header">
-          <div class="col-md-1 pt-2 align-self-center hover">
+          <div class="col-3 col-md-2 pt-2 align-self-center hover">
             <div class="wrapper-delete-container" @click.prevent="deleteObjectif"> - </div>
           </div>
           
-          <div class="col-md-7 title center pl-5 align-self-center hover" @click="isOnEditMode = true">
+          <div class="col-7 col-md-6 title center pl-1 align-self-center hover" @click="isOnEditMode = true">
             <h3> {{copyObjectif.title}} </h3>
           </div>
           
-          <div class="col-md-4 border-left weight align-self-center" @click="isOnEditMode = true">
+          <div class="col-2 col-md-4 border-left weight align-self-center" @click="isOnEditMode = true">
             {{copyObjectif.weight}}%
           </div>
           
@@ -114,11 +114,14 @@
                         })
                 }
                 else {
-                    this.copyObjectif.title = this.title ;
-                    this.copyObjectif.weight = this.weight ;
+                    this.reverseData()
                 }
 
                 this.isOnEditMode = false;
+            },
+            reverseData(){
+                this.copyObjectif.title = this.title ;
+                this.copyObjectif.weight = this.weight ;
             },
             init_var() {
                 this.copyObjectif = this.objectif;
@@ -133,7 +136,7 @@
             },
             process_weight() {
                 let count = this.copyKrs.reduce((a, b) => a + (b.weight || 0), 0);
-                this.weightStatusError = count == 100 ? false : true;
+                this.weightStatusError = count != 100;
             },
         },
         mounted() {
@@ -153,10 +156,8 @@
             });
 
             Event.$on(key_delete_kr, (index) => {
-                console.log(key_delete_kr);
                 this.copyKrs.splice(index, 1);
                 this.process_weight();
-
             })
         }
     }

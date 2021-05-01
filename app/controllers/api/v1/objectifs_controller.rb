@@ -3,33 +3,19 @@ class Api::V1::ObjectifsController < ApplicationController
   before_action :set_objectif, only:[:update,:destroy]
 
   def index
-    json_data =  Objectif.includes(:krs).all.map do |objectif|
-      objectif.as_json(include: :krs)
-    end
-    render json: json_data
+    render json: Objectifs::List.call
   end
 
   def update
     respond_to do |format|
-      if @objectif.update(objectif_params)
-        data = {status: :ok,msg:"Objectif updated successfully",data:@objectif}
-      else
-        data = {status: :error,msg:"Error",data:{}}
-      end
-
+      data = Objectifs::UpdateItem.call(@objectif,objectif_params)
       format.json { render json: data }
     end
   end
 
   def destroy
     respond_to do |format|
-      if @objectif.delete
-        Kr.where(objectif_id:params[:id]).delete_all
-        data = {status: :ok,msg:"Objectif deleted successfully"}
-      else
-        data = {status: :error,msg:"Error",data:{}}
-      end
-
+      data = Objectifs::Delete.call(@objectif)
       format.json { render json: data }
     end
   end
@@ -37,13 +23,7 @@ class Api::V1::ObjectifsController < ApplicationController
 
   def create
     respond_to do |format|
-      @objectif = Objectif.new({title:"placeholder",weight:0})
-      if @objectif.save
-        data = {status: :ok,msg:"Objectif created successfully",data:@objectif}
-      else
-        data = {status: :error,msg:"Error",data:{}}
-      end
-
+      data = Objectifs::Create.call
       format.json {render json: data }
     end
   end

@@ -8,7 +8,7 @@ class Api::V1::ObjectifsController < ApplicationController
 
   def update
     respond_to do |format|
-      data = Objectifs::UpdateItem.call(@objectif,objectif_params)
+      data = Objectifs::Update.call(@objectif,objectif_params)
       format.json { render json: data }
     end
   end

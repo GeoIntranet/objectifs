@@ -14,7 +14,7 @@
           </div>
         </div>
       </div>
-      <div class="row mt-2" v-if="invalidWeight == true">
+      <div class="row mt-2" v-if="invalidWeight">
         <div class="col-lg-12 text-center">
           <hr class="elevo">
           <div class="badge badge-invalid">Invalid general weight</div>
@@ -70,6 +70,7 @@
         },
         mounted() {
             this.getObjectifs();
+            
             Event.$on('edit_objectif', (index,objectif) => {
                 this.objectifs[index] = objectif;
                 this.processWeight();

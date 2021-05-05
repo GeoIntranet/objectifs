@@ -5,5 +5,5 @@ class Objectif < ApplicationRecord
   validates :weight, presence: true
   validates :weight, numericality: { only_integer: true }
 
-  has_many :krs, dependent: :delete_all
+  has_many :krs, dependent: :destroy
 end

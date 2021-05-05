@@ -24,10 +24,16 @@
                 <input type="number" class="form-control" v-model="copyObjectif.weight">
               </div>
               <div class="col-md-1">
-                <div data-toggle="tooltip" data-placement="top" title="Save" class="wrapper-delete-container" @click.prevent="update"> || </div>
+                <div
+                  data-toggle="tooltip"
+                  data-placement="top" title="Cancel"
+                  class="wrapper-delete-container" @click.prevent="toggleEditMode"> - </div>
               </div>
               <div class="col-md-1">
-                <div data-toggle="tooltip" data-placement="top" title="Cancel" class="wrapper-delete-container" @click.prevent="toggleEditMode"> - </div>
+                <div
+                  data-toggle="tooltip"
+                  data-placement="top" title="Save"
+                  class="wrapper-delete-container" @click.prevent="update"> || </div>
               </div>
             </div>
           
@@ -114,12 +120,12 @@
                     title: vm.copyObjectif.title,
                     weight: vm.copyObjectif.weight,
                 })
-                    .then(function (response) {
-                        Event.$emit('edit_objectif', vm.index, response.data.data);
-                        vm.isOnEditMode = false;
-                    })
-                    .catch(function (error) {
-                    })
+                .then(function (response) {
+                    Event.$emit('edit_objectif', vm.index, response.data.data);
+                    vm.isOnEditMode = false;
+                })
+                .catch(function (error) {
+                })
             },
             reverseData(){
                 this.copyObjectif.title = this.title ;
@@ -147,6 +153,7 @@
             let keyEditKr = "edit_kr_" + this.objectif.id;
 
             this.initVar();
+            
             Event.$on(keyEditKr, (index, kr) => {
                 this.copyKrs[index] = kr;
                 this.processWeight();

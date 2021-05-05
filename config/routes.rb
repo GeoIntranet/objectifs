@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :objectifs, defaults: { format: 'json' } do
-        resources :krs, defaults: { format: 'json' }
+        resources :krs,only:['update','destroy','create'], defaults: { format: 'json' }
       end
     end
   end

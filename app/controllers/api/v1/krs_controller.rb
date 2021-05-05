@@ -2,9 +2,7 @@ class Api::V1::KrsController < ApplicationController
 
   before_action :set_kr, only:[:update,:destroy]
 
-  def index
-  end
-
+  
   def update
     respond_to do |format|
       data = Krs::Update.call(@kr,kr_params)

@@ -24,10 +24,10 @@
                 <input type="number" class="form-control" v-model="copyObjectif.weight">
               </div>
               <div class="col-md-1">
-                <div class="wrapper-delete-container" @click.prevent="update"> ||</div>
+                <div data-toggle="tooltip" data-placement="top" title="Save" class="wrapper-delete-container" @click.prevent="update"> || </div>
               </div>
               <div class="col-md-1">
-                <div class="wrapper-delete-container" @click.prevent="toggleEditMode"> -</div>
+                <div data-toggle="tooltip" data-placement="top" title="Cancel" class="wrapper-delete-container" @click.prevent="toggleEditMode"> - </div>
               </div>
             </div>
           
@@ -96,22 +96,10 @@
                 this.isOnEditMode = !this.isOnEditMode;
             },
             update() {
-               
                 let hasConfirmation = confirm("Want to update?");
 
                 if (hasConfirmation) {
-                    let vm = this;
-                    axios.put('/api/v1/objectifs/' + vm.copyObjectif.id, {
-                        _token: window.token,
-                        title: vm.copyObjectif.title,
-                        weight: vm.copyObjectif.weight,
-                    })
-                        .then(function (response) {
-                            Event.$emit('edit_objectif', vm.index, response.data.data);
-                            vm.isOnEditMode = false;
-                        })
-                        .catch(function (error) {
-                        })
+                    this.processUpdate()
                 }
                 else {
                     this.reverseData()
@@ -119,45 +107,59 @@
 
                 this.isOnEditMode = false;
             },
+            processUpdate(){
+                let vm = this;
+                axios.put('/api/v1/objectifs/' + vm.copyObjectif.id, {
+                    _token: window.token,
+                    title: vm.copyObjectif.title,
+                    weight: vm.copyObjectif.weight,
+                })
+                    .then(function (response) {
+                        Event.$emit('edit_objectif', vm.index, response.data.data);
+                        vm.isOnEditMode = false;
+                    })
+                    .catch(function (error) {
+                    })
+            },
             reverseData(){
                 this.copyObjectif.title = this.title ;
                 this.copyObjectif.weight = this.weight ;
             },
-            init_var() {
+            initVar() {
                 this.copyObjectif = this.objectif;
                 if (this.copyObjectif.krs === undefined) {
                     this.copyObjectif.krs = [];
                 }
                 this.copyKrs = this.copyObjectif.krs;
-                this.process_weight();
+                this.processWeight();
                 
                 this.title = this.copyObjectif.title;
                 this.weight = this.copyObjectif.weight;
             },
-            process_weight() {
+            processWeight() {
                 let count = this.copyKrs.reduce((a, b) => a + (b.weight || 0), 0);
                 this.weightStatusError = count != 100;
             },
         },
         mounted() {
-            let key_add_kr = "add_kr_" + this.objectif.id;
-            let key_delete_kr = "delete_kr_" + this.objectif.id;
-            let key_edit_kr = "edit_kr_" + this.objectif.id;
+            let keyAddKr = "add_kr_" + this.objectif.id;
+            let keyDeleteKr = "delete_kr_" + this.objectif.id;
+            let keyEditKr = "edit_kr_" + this.objectif.id;
 
-            this.init_var();
-            Event.$on(key_edit_kr, (index, kr) => {
+            this.initVar();
+            Event.$on(keyEditKr, (index, kr) => {
                 this.copyKrs[index] = kr;
-                this.process_weight();
+                this.processWeight();
             });
 
-            Event.$on(key_add_kr, (kr) => {
+            Event.$on(keyAddKr, (kr) => {
                 this.copyKrs.push(kr);
-                this.process_weight();
+                this.processWeight();
             });
 
-            Event.$on(key_delete_kr, (index) => {
+            Event.$on(keyDeleteKr, (index) => {
                 this.copyKrs.splice(index, 1);
-                this.process_weight();
+                this.processWeight();
             })
         }
     }

@@ -35,11 +35,9 @@
 <script>
     import AddObjectif from './AddObjectif.vue';
     import Objectif from './Objectif.vue';
-    import Test from './test.vue';
 
     export default {
         components: {
-            test: Test,
             'add-objectif': AddObjectif,
             'objectif': Objectif,
         },
@@ -52,7 +50,6 @@
             }
         },
         props: [],
-
         methods: {
             getObjectifs() {
                 let vm = this;

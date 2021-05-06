@@ -2,6 +2,18 @@ class Api::V1::ObjectifsController < ApplicationController
 
   before_action :set_objectif, only:[:update,:destroy]
 
+  def process_weight
+    objectifs = Objectif.all.pluck(:weight)
+
+    if objectifs.sum != 100
+      data = {status: false ,msg:"Invalid total weigh"}
+    else
+      data = {status: true,msg:"valid total weight"}
+    end
+
+    render json: data
+  end
+
   def index
     render json: Objectifs::List.call
   end

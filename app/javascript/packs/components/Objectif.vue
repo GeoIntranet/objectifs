@@ -4,7 +4,7 @@
       <div class="col-md-12">
         <div class="row objectif-header">
           <div class="col-3 col-md-2 pt-2 align-self-center hover">
-            <div class="wrapper-delete-container" @click.prevent="deleteObjectif"> - </div>
+            <div class="wrapper-delete-container" @click.prevent="deleteObjectif"> -</div>
           </div>
           
           <div class="col-7 col-md-6 title center pl-1 align-self-center hover" @click="isOnEditMode = true">
@@ -27,13 +27,15 @@
                 <div
                   data-toggle="tooltip"
                   data-placement="top" title="Cancel"
-                  class="wrapper-delete-container" @click.prevent="toggleEditMode"> - </div>
+                  class="wrapper-delete-container" @click.prevent="toggleEditMode"> -
+                </div>
               </div>
               <div class="col-md-1">
                 <div
                   data-toggle="tooltip"
                   data-placement="top" title="Save"
-                  class="wrapper-delete-container" @click.prevent="update"> || </div>
+                  class="wrapper-delete-container" @click.prevent="update"> ||
+                </div>
               </div>
             </div>
           
@@ -113,23 +115,23 @@
 
                 this.isOnEditMode = false;
             },
-            processUpdate(){
+            processUpdate() {
                 let vm = this;
                 axios.put('/api/v1/objectifs/' + vm.copyObjectif.id, {
                     _token: window.token,
                     title: vm.copyObjectif.title,
                     weight: vm.copyObjectif.weight,
                 })
-                .then(function (response) {
-                    Event.$emit('edit_objectif', vm.index, response.data.data);
-                    vm.isOnEditMode = false;
-                })
-                .catch(function (error) {
-                })
+                    .then(function (response) {
+                        Event.$emit('edit_objectif', vm.index, response.data.data);
+                        vm.isOnEditMode = false;
+                    })
+                    .catch(function (error) {
+                    })
             },
-            reverseData(){
-                this.copyObjectif.title = this.title ;
-                this.copyObjectif.weight = this.weight ;
+            reverseData() {
+                this.copyObjectif.title = this.title;
+                this.copyObjectif.weight = this.weight;
             },
             initVar() {
                 this.copyObjectif = this.objectif;
@@ -138,13 +140,22 @@
                 }
                 this.copyKrs = this.copyObjectif.krs;
                 this.processWeight();
-                
+
                 this.title = this.copyObjectif.title;
                 this.weight = this.copyObjectif.weight;
             },
             processWeight() {
-                let count = this.copyKrs.reduce((a, b) => a + (b.weight || 0), 0);
-                this.weightStatusError = count != 100;
+                let vm = this;
+                axios.get('api/v1/objectifs/'+vm.copyObjectif.id+'/process_weight', {
+                    _token: window.token,
+                })
+                    .then((response) => {
+                        console.log(response.data.status);
+                        this.weightStatusError = !response.data.status;
+                    })
+                    .catch(function (error) {
+                    })
+
             },
         },
         mounted() {
@@ -153,7 +164,7 @@
             let keyEditKr = "edit_kr_" + this.objectif.id;
 
             this.initVar();
-            
+
             Event.$on(keyEditKr, (index, kr) => {
                 this.copyKrs[index] = kr;
                 this.processWeight();

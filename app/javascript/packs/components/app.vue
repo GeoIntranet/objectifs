@@ -8,7 +8,8 @@
     </div>
     <div class="container">
       <div class="row">
-        <div class="col-12 col-sm-6 col-md-6 col-lg-4 mt-3" v-for="(objectif,index) in this.objectifs" :key="objectif.id">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-4 mt-3" v-for="(objectif,index) in this.objectifs"
+             :key="objectif.id">
           <div class="wrapper-objectif pr-2">
             <objectif :index="index" :objectif="objectif"></objectif>
           </div>
@@ -64,14 +65,25 @@
                     })
             },
             processWeight() {
-                this.weight = this.objectifs.reduce((a, b) => a + (b.weight || 0), 0);
-                this.invalidWeight = this.weight != 100;
+                let vm = this;
+                axios.get('api/v1/objectifs/process_weight' , {
+                    _token: window.token,
+                })
+                .then((response) => {
+                    console.log(response.data.status);
+                    this.invalidWeight = !response.data.status;
+                })
+                .catch(function (error) {
+                })
+               
+                //this.weight = this.objectifs.reduce((a, b) => a + (b.weight || 0), 0);
+                //this.invalidWeight = this.weight != 100;
             }
         },
         mounted() {
             this.getObjectifs();
-            
-            Event.$on('edit_objectif', (index,objectif) => {
+
+            Event.$on('edit_objectif', (index, objectif) => {
                 this.objectifs[index] = objectif;
                 this.processWeight();
             });

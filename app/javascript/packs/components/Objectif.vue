@@ -145,17 +145,14 @@
                 this.weight = this.copyObjectif.weight;
             },
             processWeight() {
-                let vm = this;
-                axios.get('api/v1/objectifs/'+vm.copyObjectif.id+'/process_weight', {
+                axios.get('api/v1/objectifs/' + this.copyObjectif.id + '/process_weight', {
                     _token: window.token,
                 })
                     .then((response) => {
-                        console.log(response.data.status);
                         this.weightStatusError = !response.data.status;
                     })
                     .catch(function (error) {
                     })
-
             },
         },
         mounted() {

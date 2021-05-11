@@ -53,31 +53,26 @@
         props: [],
         methods: {
             getObjectifs() {
-                let vm = this;
                 axios.get('/api/v1/objectifs', {
                     _token: window.token,
                 })
-                    .then(function (response) {
-                        vm.objectifs = response.data;
-                        vm.processWeight();
+                    .then((response) => {
+                        this.objectifs = response.data;
+                        this.processWeight();
                     })
                     .catch(function (error) {
                     })
             },
             processWeight() {
-                let vm = this;
-                axios.get('api/v1/objectifs/process_weight' , {
+
+                axios.get('api/v1/objectifs/process_weight', {
                     _token: window.token,
                 })
-                .then((response) => {
-                    console.log(response.data.status);
-                    this.invalidWeight = !response.data.status;
-                })
-                .catch(function (error) {
-                })
-               
-                //this.weight = this.objectifs.reduce((a, b) => a + (b.weight || 0), 0);
-                //this.invalidWeight = this.weight != 100;
+                    .then((response) => {
+                        this.invalidWeight = !response.data.status;
+                    })
+                    .catch(function (error) {
+                    })
             }
         },
         mounted() {

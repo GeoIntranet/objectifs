@@ -1,14 +1,14 @@
 class Api::V1::ObjectifsController < ApplicationController
 
-  before_action :set_objectif, only:[:update,:destroy]
+  before_action :set_objectif, only: [:update, :destroy]
 
   def process_weight
-    objectifs = Objectif.all.pluck(:weight)
+    weights = Objectif.all.pluck(:weight)
 
-    if objectifs.sum != 100
-      data = {status: false ,msg:"Invalid total weigh"}
+    if weights.sum != 100
+      data = { status: false, message: "Invalid total weigh" }
     else
-      data = {status: true,msg:"valid total weight"}
+      data = { status: true, message: "valid total weight" }
     end
 
     render json: data
@@ -20,7 +20,7 @@ class Api::V1::ObjectifsController < ApplicationController
 
   def update
     respond_to do |format|
-      data = Objectifs::Update.call(@objectif,objectif_params)
+      data = Objectifs::Update.call(@objectif, objectif_params)
       format.json { render json: data }
     end
   end
@@ -36,7 +36,7 @@ class Api::V1::ObjectifsController < ApplicationController
   def create
     respond_to do |format|
       data = Objectifs::Create.call
-      format.json {render json: data }
+      format.json { render json: data }
     end
   end
 
